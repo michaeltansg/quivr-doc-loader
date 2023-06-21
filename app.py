@@ -28,9 +28,11 @@ for document in documents:
 
 print(f"Found {len(documents)} documents")
 
-# Last document page content
-# print(f"Document: {documents[2].page_content}")
+# Print page content
+print('============================================================')
+print(f"Version: {documents[2].metadata['source']}")
 print(f"Version: {documents[2].metadata['version']}")
+print(f"Document: {documents[2].page_content}")
 
 
 
