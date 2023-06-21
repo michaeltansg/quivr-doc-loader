@@ -25,6 +25,16 @@ Replace the environment variables in `.env` for this project.
 
 ## Running the app
 
+Build and run the docker container
+
+```bash
+docker build -t quivr-doc-loader . && docker run -d -p 8022:22 -v .:/app --name doc-loader quivr-doc-loader
+```
+
+SSH into the container and run the command
+
 ```bash
 $ python app.py
 ```
+
+Because the application maps the app folder to the local file system. It is possible to make modifications to the source code and rerun the python script without rebuilding the docker image or stopping the container.
