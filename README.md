@@ -3,11 +3,20 @@ Batch document loader into [Quivr](https://github.com/StanGirard/quivr)
 
 ## Setup
 
+Build and run the docker container
+
+```bash
+docker build -t quivr-doc-loader . && docker run -d -p 8022:22 -v .:/app --name doc-loader quivr-doc-loader
+```
+
+SSH into the container then continue with the following setup.
+
 ### Python Version and Virtual Environment
 
 `pyenv` is used for this project. This will use the version of python defined in `.python-version` file. Activate the virtual environment and install dependencies like so:
 
 ```bash
+$ bash
 $ python -m venv venv
 $ source venv/bin/activate
 $ pip install -r requirements.txt
@@ -24,14 +33,6 @@ $ cp .env.example .env
 Replace the environment variables in `.env` for this project.
 
 ## Running the app
-
-Build and run the docker container
-
-```bash
-docker build -t quivr-doc-loader . && docker run -d -p 8022:22 -v .:/app --name doc-loader quivr-doc-loader
-```
-
-SSH into the container and run the command
 
 ```bash
 $ python app.py
