@@ -30,7 +30,7 @@ print(f"Found {len(documents)} documents")
 
 # Print page content
 print('============================================================')
-print(f"Version: {documents[2].metadata['source']}")
+print(f"Source: {documents[2].metadata['source']}")
 print(f"Version: {documents[2].metadata['version']}")
 print(f"Document: {documents[2].page_content}")
 
