@@ -2,7 +2,7 @@
 import os
 from dotenv import load_dotenv
 
-from custom_confluence_loader import CustomConfluenceLoader
+from langchain.document_loaders import ConfluenceLoader, ContentFormat
 
 # Load environment variables from .env file
 load_dotenv()
@@ -13,15 +13,15 @@ username = os.getenv('ATLASSIAN_USERNAME')
 api_key = os.getenv('ATLASSIAN_API_KEY')
 space_key = os.getenv('ATLASSIAN_SPACE_KEY')
 
-# Create a CustomConfluenceLoader instance
-loader = CustomConfluenceLoader(
+# Create a ConfluenceLoader instance
+loader = ConfluenceLoader(
     url = f'https://{sitename}.atlassian.net/wiki',
     username = username,
     api_key = api_key
 )
 
 # Load documents from Confluence
-documents = loader.load(space_key=space_key, include_attachments=False, limit=50, max_pages=10)
+documents = loader.load(space_key=space_key, include_attachments=False, content_format=ContentFormat.STORAGE_VERSION, limit=50, max_pages=10)
 
 for document in documents:
     print(f"Document: {document.metadata}")

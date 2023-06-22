@@ -1,5 +1,6 @@
 python-dotenv
-langchain==0.0.200
+# langchain==0.0.200
+langchain @ git+https://github.com/michaeltansg/langchain@cc5d19d716a02c56e275363ac3901420674d4ae9
 openai==0.27.6
 tiktoken==0.4.0
 atlassian-python-api==3.38.0
@@ -12,3 +13,4 @@ svglib==1.5.1
 rlPyCairo==0.3.0
 python-poppler==0.4.1
 xlrd==2.0.1
+requests==2.31.0
