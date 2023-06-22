@@ -22,14 +22,16 @@ RUN apt-get install -y poppler-utils
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt --timeout 100
 
-# Install OpenSSH
-RUN apt-get update && apt-get install -y openssh-server
-RUN mkdir /var/run/sshd
-RUN echo 'root:password' | chpasswd
-RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+# Create a new user with bash as their default shell.
+RUN useradd -ms /bin/bash user
 
-# Set bash as the default shell for the root user
-RUN usermod -s /bin/bash root
+# Install openssh-server and bash.
+RUN apt-get update && apt-get install -y openssh-server
+
+# Set up SSH. You may want to configure this differently in a real setup.
+RUN mkdir /var/run/sshd
+RUN echo 'user:password' | chpasswd
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd

@@ -1,0 +1,10 @@
+version: '3'
+services:
+  doc-loader:
+    build: .
+    image: quivr-doc-loader
+    volumes:
+      - .:/app
+    ports:
+      - 8022:22
+    restart: always
