@@ -73,7 +73,6 @@ class ConfluenceExtractor:
             include_attachments: bool = False,
             limit: Optional[int] = 50,
             max_pages: Optional[int] = 1000,
-            ocr_languages: Optional[str] = None,
     ):
         pages = self.paginate_request(
             self.confluence.get_all_pages_from_space,
