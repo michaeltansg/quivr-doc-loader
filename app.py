@@ -1,42 +1,39 @@
-# Import the required dependencies
+""" The script containing the entry point for the application. """
 import os
 from dotenv import load_dotenv
-
-from langchain.document_loaders import ConfluenceLoader, ContentFormat
-from document_uploader import DocumentUploader
+from confluence_extractor import ConfluenceExtractor, ConfluenceConfiguration
 
 # Load environment variables from .env file
 load_dotenv()
 
-#Get specific environment variables
-sitename = os.getenv("ATLASSIAN_SITENAME")
-username = os.getenv('ATLASSIAN_USERNAME')
-api_key = os.getenv('ATLASSIAN_API_KEY')
-space_key = os.getenv('ATLASSIAN_SPACE_KEY')
-quivr_api_key = os.getenv('QUIVR_API_KEY')
-url = os.getenv('QUIVR_BACKEND_URL')
+def main():
+    """ The main entry point for the confluence_extractor application. """
 
-# Create a ConfluenceLoader instance
-loader = ConfluenceLoader(
-    url = f'https://{sitename}.atlassian.net/wiki',
-    username = username,
-    api_key = api_key
-)
+    #Get specific environment variables
+    sitename = os.getenv("ATLASSIAN_SITENAME")
+    username = os.getenv('ATLASSIAN_USERNAME')
+    api_key = os.getenv('ATLASSIAN_API_KEY')
+    space_key = os.getenv('ATLASSIAN_SPACE_KEY')
+    download_folder_base = os.getenv('CONFLUENCE_CONTENT_FOLDER')
 
-# Load documents from Confluence
-documents = loader.load(space_key=space_key, include_attachments=False, content_format=ContentFormat.STORAGE_VERSION, limit=50, max_pages=10)
+    # Location for storing extracted Confluence content for confluence space
+    confluence_download_location = download_folder_base + '-' + space_key
+    if not os.path.exists(confluence_download_location):
+        os.makedirs(confluence_download_location)
 
-for document in documents:
-    print(f"Document: {document.metadata}")
+    # Create a ConfluenceConfiguration object
+    confluence_config = ConfluenceConfiguration(sitename, username, api_key, space_key)
 
-print(f"Found {len(documents)} documents")
+    extractor = ConfluenceExtractor(
+        confluence_config,
+        confluence_download_location,
+    )
+    # Example of extracting a single page by id
+    # extractor.process_page({'id': 'PAGE_ID', 'title': ''}, include_attachments=True)
 
-# Print page content
-print('============================================================')
-print(f"Source: {documents[2].metadata['source']}")
-print(f"Version: {documents[2].metadata['version']}")
-print(f"Document: {documents[2].page_content}")
+    # Extract all pages from the confluence space
+    extractor.extract_all_pages(include_attachments=True, max_pages=2000)
 
-# uploader = DocumentUploader(quivr_api_key, url)
-# response = uploader.upload_file("sample.txt")
-# print(response)
+# Execute the following code only if the script is run directly, not imported.
+if __name__ == '__main__':
+    main()
